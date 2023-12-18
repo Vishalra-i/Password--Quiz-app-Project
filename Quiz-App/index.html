@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="output.css">
+    <style>
+        .select{
+            padding: 10px;
+            margin: 10px;
+            font-weight: bold;
+            border:2px solid rgb(13, 14, 13);
+            background-color: rgb(214, 196, 218);
+            color: rgb(48, 43, 37);
+            width: 100%;
+            text-align: left;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+   <div id="container" class="px-10 py-3">
+    <!-- =======Head Part========= -->
+       <div class=" text-center bg-[#ce4f4f]   text-white px-5 py-5">
+           <h1 class="text-[40px]">Quiz App</h1>
+           <div class="flex justify-between items-center font-bold text-[20px]">
+              <p>Question <Span class="qc">1/10</Span></p>
+              <p>Score <span class="sc">0</span></p>
+           </div>
+      </div>
+    <!-- ==========Question Part ===========   -->
+        <div id="question-container" class="text-[30px] font-bold mt-10 mx-5 tracking-wider"><span id="number">Q1.</span>what is the name of ?</div>
+        <div id="option-container"></div>
+        <div id="button" class="flex justify-center items-center">
+          <button id="nextquestion" class="bg-yellow-400 p-2 rounded-lg w-28 h-10 text-[16px] text-center mx-2 my-5 ">Next</button>
+          <button id="restart" class="p-3 rounded-lg text-xl font-white bg-green-400" style="display: none;">Restart</button>
+        </div>
+        <div id="result" class="font-bold flex justify-center items-center text-4xl text-green-800"></div>
+   </div>
+
+ <!-- =====Script======   -->
+<script>
+   const sample = [
+        {
+            number:"1",
+            question: "Which type of JavaScript language is ___",
+            option:['Object-Oriented','Object-Based','Assembly-language','High-level'],
+            answer:"Object-Based"
+        },
+        {
+            number:"2",
+            question: "Which one of the following also known as Conditional Expression:",
+            option:[
+                    'Alternative to if-else',
+                    'Switch statement',
+                    'If-then-else statement',
+                    'immediate if'
+                ],
+            answer:"immediate if"
+        },
+        {
+            number:"3",
+            question: " In JavaScript, what is a block of statement?",
+            option:['Conditional block','block that combines a number of statements into a single compound statement','both conditional block and a single statement','block that contains a single statement'],
+            answer:"block that combines a number of statements into a single compound statement"
+        },
+        {
+            number:"4",
+            question: "When interpreter encounters an empty statements, what it will do:",
+            option:['Shows a warning','Prompts to complete the statement','Throws an error','Ignores the statements'],
+            answer:"Ignores the statements"
+        },
+        {
+            number:"5",
+            question: "The function and  var are known as:",
+            option:['Keywords','Data types','Declaration statements','Prototypes'],
+            answer:"Declaration statements"
+        },
+        {
+            number:"6",
+            question: " What is JavaScript?",
+            option:['JavaScript is a scripting language used to make the website interactive','JavaScript is an assembly language used to make the website interactive',' JavaScript is a compiled language used to make the website interactive','None of the mentioned'],
+            answer:" JavaScript is a scripting language used to make the website interactive"
+        },
+        {
+            number:"7",
+            question: "Arrays in JavaScript are defined by which of the following statements?",
+            option:['It is an ordered list of values',' It is an ordered list of objects','It is an ordered list of string','It is an ordered list of functions'],
+            answer:"It is an ordered list of values"
+        },
+        {
+           number: "8",
+           question: "What does CSS stand for?",
+           option: [
+             "Counter Style Sheet",
+             "Computer Style Sheet",
+             "Cascading Style Sheet",
+             "Creative Style Sheet",
+            ],
+            answer: "Cascading Style Sheet"
+        }, 
+        {
+          number: "9",
+          question: "Which of the following is NOT a JavaScript framework?",
+          option: [
+            "React",
+            "Angular",
+            "Vue",
+            "JavaFX"
+          ],
+          answer: "JavaFX"
+        },
+        {
+          number: "10",
+          question: "What is the purpose of the 'use strict' directive in JavaScript?",
+          option: [
+            "To enable strict mode and catch common coding errors",
+            "To include external JavaScript files",
+            "To create a new variable in strict mode",
+            "To define a strict data type"
+          ],
+          answer: "To enable strict mode and catch common coding errors"
+        }
+        
+      ];
+      
+      let scorecount = document.querySelector(".sc");
+      let score = 0 ;
+      let nextquestion = document.querySelector("#nextquestion")
+      let restart= document.querySelector("#restart")
+      let questionnumber = 0 ;
+      
+      
+    function showQuestion() {
+          
+    let Qcon = document.querySelector("#question-container");
+    let Acon = document.querySelector("#option-container");
+    let count = document.querySelector(".qc");
+    
+    
+    Qcon.innerHTML = `Q${sample[questionnumber].number} ${sample[questionnumber].question}`
+    count.innerHTML = `${sample[questionnumber].number}/10`
+    Acon.innerHTML = ""
+    
+    console.log(sample[questionnumber].answer);
+
+      sample[questionnumber].option.forEach((option)=>{
+        let button = document.createElement("button")
+        button.className = "select"
+        button.innerHTML = option ;
+        button.setAttribute("onClick","showanswer(event)")
+        Acon.appendChild(button);
+      }
+      )
+    }showQuestion()
+    
+    function showanswer(event){
+      const correctAnswer = sample[questionnumber].answer;
+      const selectedOption = event.target.innerHTML;
+      if (!selectedOption) {
+        alert("Please select an option before proceeding.");
+        return;
+      }
+      if (selectedOption === correctAnswer) {
+           event.target.style.backgroundColor = "green";
+           setTimeout(nextqn,2000);
+          score++
+          scorecount.innerHTML = score*10 ;
+      }
+      else{
+        event.target.style.backgroundColor = "red";
+        setTimeout(nextqn,2000);
+        const options = document.querySelectorAll(".select");
+        options.forEach(option => {
+            if (option.innerHTML === correctAnswer) {
+                option.style.backgroundColor = "green";
+            }
+      })}}
+    
+
+
+function nextqn() {
+  if (questionnumber < 9) {
+        questionnumber++;
+        showQuestion();
+    } else {
+        // Display the final result
+        document.getElementById("question-container").innerHTML = "Quiz Completed!";
+        document.getElementById("option-container").innerHTML = "";
+        document.getElementById("nextquestion").style.display = "none";
+        document.getElementById("restart").style.display = "block";
+        document.getElementById("result").innerHTML = `Final Score: ${score*10}/100`;
+    }
+}
+    restart.addEventListener("click",()=>{
+       score = 0 ;
+       questionnumber=0;
+       restart.style.display="none"
+       document.getElementById("nextquestion").style.display = "block";
+       document.getElementById("result").innerHTML = "";
+       scorecount.innerHTML = score;
+
+       showQuestion()
+    })
+
+nextquestion.addEventListener("click",()=>{
+ 
+  const selectedOption = document.querySelector(".select[style='background-color: green;']");
+
+if (!selectedOption) {
+      alert("Please select an option before proceeding to the next question."); 
+      return;
+}else{
+  nextqn()
+}
+});
+</script>
+</body>
+</html>
